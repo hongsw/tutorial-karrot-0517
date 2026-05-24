@@ -1,0 +1,23 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "baryon": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "TalkMode — baryon.ai (Qwen3-Coder, 한국어)",
+      "options": {
+        "baseURL": "https://llm.baryon.ai/v1",
+        "apiKey": "not-used",
+        "headers": {
+          "X-Device-Id": "여기에-uuidgen-결과-붙여넣기",
+          "User-Agent": "opencode/baryon"
+        }
+      },
+      "models": {
+        "baryon-1": {
+          "name": "Baryon Labs AI"
+        }
+      }
+    }
+  },
+  "model": "baryon/baryon-1"
+}

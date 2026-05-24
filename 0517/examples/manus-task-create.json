@@ -1,0 +1,17 @@
+{
+  "message": {
+    "content": [
+      {
+        "type": "text",
+        "text": "한국어로 당근 사업강화팀을 위한 신규 사업 기회 5개를 조사하고, 각 기회별 근거, 리스크, 다음 액션을 표로 정리해줘."
+      }
+    ]
+  },
+  "locale": "ko",
+  "interactive_mode": false,
+  "hide_in_task_list": false,
+  "share_visibility": "private",
+  "agent_profile": "manus-1.6",
+  "title": "당근 사업강화 신규 사업 기회 조사"
+}
+

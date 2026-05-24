@@ -1,0 +1,84 @@
+{
+  "name": "콘텐츠 에이전트 팀",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [100, 300]
+    },
+    {
+      "id": "2",
+      "name": "Set Topic",
+      "type": "n8n-nodes-base.set",
+      "position": [300, 300],
+      "parameters": {
+        "values": {
+          "string": [{ "name": "topic", "value": "AI 고객응대 자동화 3가지 방법" }]
+        }
+      }
+    },
+    {
+      "id": "3",
+      "name": "Researcher",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "position": [500, 200],
+      "parameters": {
+        "model": "claude-sonnet-4-6",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "당신은 리서처입니다. 주제에 대해 핵심 포인트 5개와 SEO 키워드 10개를 JSON으로 반환하세요.\n{\"points\": [...], \"keywords\": [...]}"
+            },
+            {
+              "role": "user",
+              "content": "주제: {{ $json.topic }}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "4",
+      "name": "Writer",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "position": [700, 200],
+      "parameters": {
+        "model": "claude-sonnet-4-6",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "당신은 블로그 라이터입니다. 리서치 결과로 600자 초안을 작성하세요."
+            },
+            {
+              "role": "user",
+              "content": "주제: {{ $('Set Topic').item.json.topic }}\n리서치: {{ $json.message.content }}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "5",
+      "name": "Notion 저장",
+      "type": "n8n-nodes-base.notion",
+      "position": [900, 200],
+      "parameters": {
+        "operation": "create",
+        "databaseId": "YOUR_NOTION_DB_ID",
+        "title": "{{ $('Set Topic').item.json.topic }}",
+        "properties": {
+          "Content": "{{ $json.message.content }}"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": { "main": [[{ "node": "Set Topic" }]] },
+    "Set Topic": { "main": [[{ "node": "Researcher" }]] },
+    "Researcher": { "main": [[{ "node": "Writer" }]] },
+    "Writer": { "main": [[{ "node": "Notion 저장" }]] }
+  }
+}
