@@ -5,4 +5,8 @@ node_modules/
 .DS_Store
 *.pptx
 .venv/
+__pycache__/
+# 0531 실습: 실행 시 생성되는 리포트 산출물(폴더는 유지)
+0531/reports/*
+!0531/reports/.gitkeep
 
